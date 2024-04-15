@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+button.slick-next{
+    right: 80px;
+    z-index: 10;
+    margin-bottom: 0;
+}
+button.slick-prev{
+    left: 20px;
+    z-index: 10;
+}
+button.slick-next::before,button.slick-prev::before{
+    color: red;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(202, 174, 174, 0.8);
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button.slick-next::before{
+    content: '\276F';
+}
+button.slick-prev::before{
+    content: '\276E';
+}

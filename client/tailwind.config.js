@@ -17,7 +17,30 @@ module.exports = {
       colors: {
         main: '#be1e2d',
       },
+      keyframes: {
+        'slide-top' : {
+          '0%' : {
+            '-webkit-transform': 'translateY(100)',
+                    transform: 'translateY(100)'
+          },
+          '100%': {
+            '-webkit-transform':' translateY(0px)',
+                    transform: 'translateY(0px)'
+          }
+        }
+      },
+      animation: {
+        'slide-top':'slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both'
+      },
+      flex: {
+        '2': '2 2 0%',
+        '3': '3 3 0%',
+        '4': '4 4 0%',
+        '5': '5 5 0%',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    '@tailwindcss/line-clamp'
+  ],
 }

@@ -1,9 +1,8 @@
-import { FaPhoneAlt } from "react-icons/fa";
-import { FaMapMarkerAlt } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
 import { FaBagShopping } from "react-icons/fa6";
-import { FaUserCircle } from "react-icons/fa";
-import { AiFillHome } from "react-icons/ai";
+import { FaUserCircle, FaEye , FaMapMarkerAlt , FaPhoneAlt} from "react-icons/fa";
+import { AiFillStar, AiOutlineStar, AiFillHome , AiOutlineMenu} from "react-icons/ai";
+import { AiFillHeart } from "react-icons/ai";
 
 const icons = {
     FaPhoneAlt,
@@ -11,7 +10,12 @@ const icons = {
     BsBoxSeam,
     FaBagShopping,
     FaUserCircle,
-    AiFillHome
+    AiFillHome,
+    AiFillStar,
+    AiOutlineStar,
+    FaEye,
+    AiFillHeart,
+    AiOutlineMenu
 }
 
 export default icons;
