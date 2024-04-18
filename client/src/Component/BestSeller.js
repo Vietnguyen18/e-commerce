@@ -1,20 +1,12 @@
 import React, { useEffect, useState,memo } from "react";
 import { apiGetProducts } from "../Api/product";
-import Product from '../Component/Product'
-import Slider from "react-slick";
+import SettingSlider from "./SettingSlider";
 
 const tabs = [
   { id: 1, name: "best sellers" },
   { id: 2, name: "new arrivals" },
 ];
 
-const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1
-  };
 
   const listBanners = [
     {
@@ -71,11 +63,7 @@ const BestSeller = () => {
         ))}
       </div>
       <div className=" mt-4">
-      <Slider {...settings}>
-            {bestSeller?.map((el) => (
-                <Product key={el.id} productData={el} isNew={activedTab === 1 ? false : true} pid={el.pid} />
-            ))}
-    </Slider>
+          <SettingSlider bestSeller={bestSeller} activedTab={activedTab} />
       </div>
       {
         listBanners.map((el) => (

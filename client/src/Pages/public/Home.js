@@ -1,7 +1,19 @@
-import React from "react";
-import { Sidebar, Banner, BestSeller ,DealDaily, FeatuteProducts} from "../../Component";
+import React,{memo, useEffect, useState} from "react";
+import { Sidebar, Banner, BestSeller ,DealDaily, FeatuteProducts, SettingSlider} from "../../Component";
+import { apiGetProducts } from "../../Api/product";
 
 const Home = () => {
+  const [newProducts, setNewProducts] = useState(null);
+  const fetchProducts = async () => {
+    const response = await Promise.all([
+      apiGetProducts({ sort: "-sold" }),
+      apiGetProducts({ sort: "-createdAt" }),
+    ]);
+    if (response[1]?.success) setNewProducts(response[1].products);
+  };
+  useEffect(() => {
+    fetchProducts(); 
+  }, []);
   return (
     <>
     <div className="w-main flex">
@@ -17,13 +29,12 @@ const Home = () => {
     <div className="my-8">
        <FeatuteProducts />
     </div>
-    <div className=" w-full h-[500px]">
-    <div className="my-8">
-      <h3 className=' text-[20px font-semibold py-[15px] border-b-4 border-main uppercase' > new arrivals </h3>
-    </div>
+   <div className="my-8">
+        <h3 className=' text-[20px font-semibold py-[15px] border-b-4 border-main uppercase' > New arrivals </h3>
+        <SettingSlider bestSeller={newProducts}/>
     </div>
     </>
   );
 };
 
-export default Home;
+export default memo(Home);

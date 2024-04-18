@@ -1,17 +1,23 @@
 import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import { Login, Home, Public } from "./Pages/public";
+import { Login, Home, Public, FAQS, Services ,DetailProducts, Products, Blogs } from "./Pages/public";
 import path from "./Ultils/path";
 
 function App() {
+    
   return (
     <div className="min-h-screen  font-main">
       <Routes>
-        <Route path={path.Public} element={<Public />}>
+        <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />} />
-          <Route path={path.LOGIN} element={<Login />} />
+          <Route path={path.PRODUCTS} element={<Products />} />
+          <Route path={path.BLOGS} element={<Blogs />} />
+          <Route path={path.DETAIL_PRODUCT_CATEGORY_PID_TITLE} element={<DetailProducts />} />
+          <Route path={path.FAQS} element={<FAQS />} />
+          <Route path={path.OUT_SERVICES} element={<Services />} />
         </Route>
+        <Route path={path.LOGIN} element={<Login />} />
       </Routes>
     </div>
   );

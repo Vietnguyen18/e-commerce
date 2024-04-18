@@ -1,19 +1,25 @@
-import React from 'react'
+import React, {memo} from 'react'
 import { Outlet } from 'react-router-dom' //tuong trung cho component con
-import {Header, Navigation} from '../../Component'
+import {Footer, Header, Navigation, TopHeader} from '../../Component'
 import banner from '../../Assets/1712052486176_untitled_1_01_3.avif'
 
-function Public() {
+const Public = () => {
   return <>
         <div className='w-full flex flex-col items-center '>
+              <TopHeader />
               <img src={banner} className=' w-main h-10' alt='ảnh gốc' />
               <Header/>
               <Navigation/>
           <div className='w-main'>
-            <Outlet />
+              <Outlet />
           </div>
+          <div className='w-full'>
+            <Footer />
+          </div>
+
         </div>
+
   </>
 }
 
-export default Public
+export default memo(Public)

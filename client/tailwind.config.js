@@ -7,6 +7,13 @@ module.exports = {
     fontFamily: {
       main: ['Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
     },
+    listStyleType: {
+      none: 'none',
+      disc: 'disc',
+      decimal: 'decimal',
+      square: 'square',
+      roman: 'upper-roman',
+    },
     extend: {
       width: {
         main: '1270px',
@@ -37,6 +44,9 @@ module.exports = {
         '3': '3 3 0%',
         '4': '4 4 0%',
         '5': '5 5 0%',
+        '6': '6 6 0%',
+        '7': '7 7 0%',
+        '8': '8 8 0%',
       },
     },
   },

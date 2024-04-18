@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {memo} from 'react'
 import logo from '../Assets/logobanner.png'
 import icons from "../Ultils/icon"
 import {Link} from 'react-router-dom'
 import path from '../Ultils/path'
 
-function Header() {
+const Header = () => {
     const {FaPhoneAlt, FaMapMarkerAlt,BsBoxSeam,FaBagShopping,FaUserCircle} = icons
   return (
     <div className='border w-main h-[110px] flex justify-between '>
@@ -72,4 +72,4 @@ function Header() {
   )
 }
 
-export default Header
+export default memo(Header)

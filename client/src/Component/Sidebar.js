@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { apiGetCategories } from "../Api/app";
 import { NavLink } from "react-router-dom";
 import { createSlug } from "../Ultils/help";
@@ -33,4 +33,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default memo(Sidebar);

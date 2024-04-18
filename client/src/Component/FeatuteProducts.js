@@ -1,4 +1,4 @@
-import React,{useEffect ,useState} from 'react'
+import React,{useEffect ,useState, memo} from 'react'
 import { apiGetProducts } from '../Api/product'
 import ProductCard from './ProductCard'
 import Slider from 'react-slick'
@@ -45,7 +45,9 @@ const FeatuteProducts = () => {
         infinite: true,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
       };
   return (
     <div className=' w-fulll '>
@@ -69,9 +71,9 @@ const FeatuteProducts = () => {
                   <img src={el.img} alt="Banner" className='w-full h-[120px]'/>
                 </div>
             ))}
-    </Slider>
+      </Slider>
     </div>
   )
 }
 
-export default FeatuteProducts
+export default memo(FeatuteProducts)

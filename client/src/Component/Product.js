@@ -1,10 +1,10 @@
-import React,{useState} from 'react'
-import {formatMoney} from '../Ultils/help'
+import React,{useState, memo} from 'react'
 import label from '../Assets/label1.png'
 import labelBlue from '../Assets/label2.png'
-import {renderStarFromNumber} from "../Ultils/help"
+import {renderStarFromNumber, formatMoney} from "../Ultils/help"
 import {SelectOption} from './'
 import icons from '../Ultils/icon'
+import { Link } from 'react-router-dom'
 
     const { FaEye, AiOutlineMenu, AiFillHeart} = icons
 
@@ -12,7 +12,7 @@ const Product = ({productData, isNew}) => {
     const [isShow, setIsShow] = useState(false)
   return (
     <div className='w-full'>
-        <div className=' m-3 text-base border p-[15px] flex flex-col items-center h-[380px]'>
+        <Link className=' m-3 text-base border p-[15px] flex flex-col items-center h-[380px] ' to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${productData?.title}`}>
             <div className='w-full relative' 
                 onMouseEnter={e => {
                     e.stopPropagation()
@@ -38,9 +38,9 @@ const Product = ({productData, isNew}) => {
                     <span className=' flex py-2'>{renderStarFromNumber(productData?.totalRatings)}</span>
                     <span className=' py-2'>{`${formatMoney(productData?.price)} VND`}</span>
                 </div>
-        </div>
+        </Link>
     </div>
   )
 }
 
-export default Product
+export default memo(Product)

@@ -1,4 +1,4 @@
-import React, {useEffect , useState} from 'react'
+import React, {useEffect , useState, memo} from 'react'
 import icons from '../Ultils/icon'
 import { apiGetProducts } from '../Api/product'
 import {renderStarFromNumber,formatMoney} from '../Ultils/help'
@@ -18,11 +18,12 @@ const DealDaily = () => {
   //
   const fetchDealDaily = async () => {
     const response = await apiGetProducts({limit: 1, page: Math.round(Math.random()*20), totalRatings: 3})
+    console.log(response);
       if(response.success) {
         setDealDaily(response.products[0])
         const today = new Date();
         const formattedToday = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()} 5:00:00`;
-        const seconds = new Date(formattedToday).getTime() - new Date().getTime() + 24 / 3600 * 1000
+        const seconds = new Date(formattedToday).getTime() - new Date().getTime() + 24 * 3600 * 1000
         console.log(seconds)
         const number = secondsTohms(seconds)
         setIsHour(number.h)
@@ -33,7 +34,7 @@ const DealDaily = () => {
         setIsMinute(59)
         setIsSecond(59)
       }
-  }
+    }
 
   // useEffect(() => {
   //   fetchDealDaily()
@@ -98,4 +99,4 @@ const DealDaily = () => {
   )
 }
 
-export default DealDaily
+export default memo(DealDaily)
