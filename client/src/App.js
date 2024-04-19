@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import { Login, Home, Public, FAQS, Services ,DetailProducts, Products, Blogs } from "./Pages/public";
+import { Login, Home, Public, FAQS, Services ,DetailProducts, Products, Blogs, FinalRegister } from "./Pages/public";
 import path from "./Ultils/path";
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
           <Route path={path.FAQS} element={<FAQS />} />
           <Route path={path.OUT_SERVICES} element={<Services />} />
         </Route>
+        <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
         <Route path={path.LOGIN} element={<Login />} />
       </Routes>
     </div>

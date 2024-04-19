@@ -16,3 +16,5 @@ export { default as ExtraInfor} from "./ExtraInfor";
 export { default as ProductInformation} from "./ProductInformation";
 export { default as SettingSlider} from "./SettingSlider";
 export { default as SearchItem} from "./SearchItem";
+export { default as InputField} from "./InputField";
+export { default as Button} from "./Button";

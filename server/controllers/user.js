@@ -6,34 +6,76 @@ const jwt = require('jsonwebtoken');
 const sendMail = require('../ultils/sendMail');
 const crypto = require('crypto');
 const product = require('../models/product');
+const makeToken = require('uniqid')
 
 //POST
-const register =  asyncHandler(async(req,res)=>{
-    const {email, password, firstname, lastname} = req.body;
-    if (!email || !password || !firstname || !lastname) 
-        return res.status(400).json({
-            sucess: false,
-            mes: 'Missing inputs'
-        })
+// const register =  asyncHandler(async(req,res)=>{
+//     const {email, password, firstname, lastname} = req.body;
+//     if (!email || !password || !firstname || !lastname) 
+//         return res.status(400).json({
+//             success: false,
+//             mes: 'Missing inputs'
+//         })
 
-    const user = await User.findOne({email})
-        if(user) 
-            throw new Error('User has existed !!!')
-        else{
-            const newUser = await User.create(req.body)
-            return res.status(200).json({
-                sucess: newUser ? true : false,
-                mes: newUser ? 'Register is successfully. Please go login !' : 'Something went wrong'
+//     const user = await User.findOne({email})
+//         if(user) 
+//             throw new Error('User has existed !!!')
+//         else{
+//             const newUser = await User.create(req.body)
+//             return res.status(200).json({
+//                 success: newUser ? true : false,
+//                 mes: newUser ? 'Register is successfully. Please go login !' : 'Something went wrong'
+//             })
+//         }
+// });
+    const register = asyncHandler(async(req, res) => {
+        const {email, password, firstname, lastname, mobile} = req.body;
+        if(!email || !password || !firstname || !lastname || !mobile) {
+            return res.status(400).json({
+                success: false,
+                mes: 'Missing inputs'
             })
         }
-});
+        const checkMail = await User.findOne({email})
+        if(checkMail) throw new Error('Mail has existed')
+        else{
+            const token = makeToken()
+            res.cookie('dataregister', {...req.body, token}, {httpOnly: true, maxAge: 15*60*1000})
+            const html = `Xin vui lòng click vào link dưới đây để hoàn tất quá trình đăng kí của bạn.Link này sẽ hết hạn sau 15 phút kể từ bây giờ. 
+            <a href=${process.env.URL_SERVER}/api/user/finalregister/${token}>Click here</a>`
+            await sendMail({email, html, subject: 'Hoàn tất đăng kí .....'})
+            return res.json({
+                success: true,
+                mes: 'Please check your email to active account'
+            })
+        }
+    })
 
+// final Register
+    const finalRegister = asyncHandler(async(req, res) => {
+        const cookie = req.cookies
+        const {token} = req.params
+        if(!cookie || cookie?.dataregister?.token !== token ) {
+            res.clearCookie('dataregister')
+            return res.redirect(`${process.env.CLIENT_URL}/finalregister/failed`)
+        }
+        const newUser = await User.create({
+            email: cookie?.dataregister?.email,
+            password: cookie?.dataregister?.password,
+            mobile: cookie?.dataregister?.mobile,
+            firstname: cookie?.dataregister?.firstname,
+            lastname: cookie?.dataregister?.lastname,
+        })
+        res.clearCookie('dataregister')
+            if(newUser) return res.redirect(`${process.env.CLIENT_URL}/finalregister/success`)
+            else return res.redirect(`${process.env.CLIENT_URL}/finalregister/failed`)
+    })
 // GET
 const login =  asyncHandler(async(req,res)=>{
     const {email, password} = req.body;
     if (!email || !password ) 
         return res.status(400).json({
-            sucess: false,
+            success: false,
             mes: 'Missing inputs'
         })
 
@@ -49,7 +91,7 @@ const login =  asyncHandler(async(req,res)=>{
         // luu refrech token vao cookie
         res.cookie('refreshToken', newRefreshToken, {httpOnly: true, maxAge: 7*24*60*60*1000})
         return res.status(200).json({
-            sucess: true,
+            success: true,
             accessToken,
             userData
         })
@@ -123,7 +165,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
     const data = {
         email,
-        html
+        html,
+        subject: 'Forgot Password'
     }
     const rs = await sendMail(data)
     return res.status(200).json({
@@ -154,7 +197,7 @@ const resetPassword = asyncHandler(async (req, res) => {
  const getUser = asyncHandler(async (req, res)=>{
     const response =  await User.find().select('-refreshToken -password -role')
     return res.status(200).json({
-        sucess: response  ? true : false,
+        success: response  ? true : false,
         user: response
     })
  })
@@ -164,7 +207,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     if( !_id ) throw new Error('Missing inputs')
     const response =  await User.findByIdAndDelete( _id )
     return res.status(200).json({
-        sucess: response  ? true : false,
+        success: response  ? true : false,
         deletedUser: response ? `User with email ${response.email} delete` : 'No user delete'
     })
  })
@@ -174,7 +217,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     if( !_id || Object.keys(req.body).length === 0 ) throw new Error('Missing input')
     const response =  await User.findByIdAndUpdate( _id, req.body, {new: true} ).select('-refreshToken -password -role')
     return res.status(200).json({
-        sucess: response  ? true : false,
+        success: response  ? true : false,
         deletedUser: response ? response : 'Some thing went wrong'
     })
  })
@@ -185,7 +228,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     if(Object.keys(req.body).length === 0 ) throw new Error('Missing inputs')
     const response =  await User.findByIdAndUpdate( uid, req.body, {new: true} ).select(' -refreshToken -password -role')
     return res.status(200).json({
-        sucess: response  ? true : false,
+        success: response  ? true : false,
         deletedUser: response ? response : 'Some thing went wrong'
     })
  })
@@ -196,7 +239,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     if(!req.body.address) throw new Error('Missing inputs')
     const response =  await User.findByIdAndUpdate(_id, {$push: {address: req.body.address}}, {new: true} ).select(' -refreshToken -password -role')
     return res.status(200).json({
-        sucess: response  ? true : false,
+        success: response  ? true : false,
         updateAddressUser: response ? response : 'Some thing went wrong'
     })
  })
@@ -212,21 +255,21 @@ const resetPassword = asyncHandler(async (req, res) => {
             if(alreadyProduct.color === color) {
                 const response = await User.updateOne({cart: {$elemMatch: alreadyProduct}},{$set: {"cart.$.quantity": quantity}},{new: true})
                     return res.status(200).json({
-                        sucess: response  ? true : false,
+                        success: response  ? true : false,
                         updateCart: response ? response : 'Some thing went wrong'
                     })
                     
                 }else{
                 const response = await User.findByIdAndUpdate(_id,{$push: {cart: {product: pid, quantity, color}}},{new: true})
                 return res.status(200).json({
-                sucess: response  ? true : false,
+                success: response  ? true : false,
                 updateCart: response ? response : 'Some thing went wrong'
             }) 
             }
          }else{
             const response = await User.findByIdAndUpdate(_id,{$push: {cart: {product: pid, quantity, color}}},{new: true})
             return res.status(200).json({
-                sucess: response  ? true : false,
+                success: response  ? true : false,
                 updateCart: response ? response : 'Some thing went wrong'
             })
          }
@@ -245,5 +288,6 @@ module.exports = {
     updateUser,
     updateUserByAdmin,
     updateAddressUser,
-    updateCart
+    updateCart,
+    finalRegister
 }

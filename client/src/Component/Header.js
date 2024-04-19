@@ -30,7 +30,7 @@ const Header = () => {
             <div>
                 <span className='flex gap-5 items-center'>
                     <FaPhoneAlt className='w-6 h-6'/>
-                    <span className='font-semibold text-black hover:underline'>
+                    <span className='font-semibold text-black hover:underline cursor-pointer'>
                         (+84) 087 6466 865
                     </span>
                 </span>
@@ -38,7 +38,7 @@ const Header = () => {
             <div>
                 <span className='flex gap-5 items-center'>
                     <FaMapMarkerAlt className='w-6 h-6'/>
-                    <span className='font-semibold text-black hover:underline'>
+                    <span className='font-semibold text-black hover:underline cursor-pointer'>
                         Cửa hàng ở gần bạn
                     </span>
                 </span>
@@ -46,7 +46,7 @@ const Header = () => {
             <div>
                 <span className='flex gap-5 items-center'>
                     <BsBoxSeam className='w-6 h-6'/>
-                    <span className='font-semibold text-black hover:underline'>
+                    <span className='font-semibold text-black hover:underline cursor-pointer'>
                         Tra cứu đơn hàng
                     </span>
                 </span>
@@ -54,7 +54,7 @@ const Header = () => {
             <div>
                 <span className='flex gap-5 items-center'>
                     <FaBagShopping className='w-6 h-6'/>
-                    <span className='font-semibold text-black hover:underline'>
+                    <span className='font-semibold text-black hover:underline cursor-pointer'>
                         Giỏ hàng
                     </span>
                 </span>
@@ -62,7 +62,7 @@ const Header = () => {
             <div>
                 <span className='flex gap-5 items-center'>
                     <FaUserCircle className='w-6 h-6'/>
-                    <span className='font-semibold text-black hover:underline'>
+                    <span className='font-semibold text-black hover:underline cursor-pointer'>
                         Đăng kí / Đăng nhập
                     </span>
                 </span>
