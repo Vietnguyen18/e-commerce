@@ -119,3 +119,5 @@ export const tabs = [
     Write a review`
   },
 ]
+
+export const colors = ['black', 'brown', 'gray', 'white', 'pink', 'yellow', 'orange','purple','green','blue']

@@ -15,7 +15,7 @@ const Home = () => {
     fetchProducts(); 
   }, []);
   return (
-    <>
+    <div>
     <div className="w-main flex">
       <div className="flex flex-col w-[25%] gap-5 flex-auto">
         <Sidebar />
@@ -31,9 +31,9 @@ const Home = () => {
     </div>
    <div className="my-8">
         <h3 className=' text-[20px font-semibold py-[15px] border-b-4 border-main uppercase' > New arrivals </h3>
-        <SettingSlider bestSeller={newProducts}/>
+        <SettingSlider bestSeller={newProducts} />
     </div>
-    </>
+    </div>
   );
 };
 

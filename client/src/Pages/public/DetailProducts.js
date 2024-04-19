@@ -64,9 +64,9 @@ const DetailProducts = () => {
   },[quantity])
 
   return (
-    <div className=' w-full'>
+    <div className=' w-full '>
         <div className='  h-[80px] justify-center items-center bg-slate-100 flex'>
-              <div className='w-main'>
+              <div className='w-main ml-2'>
                   <h3>{title}</h3>
                   <BreadCrumb title={title} category={category}/>
               </div>
@@ -132,7 +132,7 @@ const DetailProducts = () => {
             </div>
             <div className='w-main m-auto mt-8'>
               <h3 className=' text-[20px font-semibold py-[15px] border-b-4 border-main uppercase' > orther customer also liked </h3>
-              <SettingSlider bestSeller={relatedProducts}/>
+              <SettingSlider bestSeller={relatedProducts} normal={true}/>
             </div>
         <div className=' h-[500px]'></div>
     </div>
