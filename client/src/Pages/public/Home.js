@@ -1,9 +1,12 @@
 import React,{memo, useEffect, useState} from "react";
 import { Sidebar, Banner, BestSeller ,DealDaily, FeatuteProducts, SettingSlider} from "../../Component";
 import { apiGetProducts } from "../../Api/product";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [newProducts, setNewProducts] = useState(null);
+  const {isLoggedIn , current} = useSelector(state => state.user)
+  console.log({isLoggedIn , current});
   const fetchProducts = async () => {
     const response = await Promise.all([
       apiGetProducts({ sort: "-sold" }),

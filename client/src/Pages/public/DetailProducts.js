@@ -2,13 +2,12 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useParams } from 'react-router-dom'
 import { apiGetProduct, apiGetProducts } from '../../Api/product'
-import BreadCrumb from '../../Component/BreadCrumb'
 import Slider from 'react-slick'
 import ReactImageMagnify from 'react-image-magnify';
 import { formatMoney, fotmatPrice, renderStarFromNumber } from '../../Ultils/help'
-import SelectQuantity from '../../Component/SelectQuantity'
-import { ExtraInfor, ProductInformation, SettingSlider } from '../../Component'
 import {extraInfor} from '../../Ultils/contants'
+import BreadCrumb from '../../Component/common/BreadCrumb';
+import { ExtraInfor, ProductInformation, SelectQuantity, SettingSlider } from '../../Component';
 
 const DetailProducts = () => {
   const {pid, title, category } = useParams()

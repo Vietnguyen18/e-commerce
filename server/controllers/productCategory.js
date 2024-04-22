@@ -11,7 +11,7 @@ const asyncHandler = require('express-async-handler')
     })
 // get Category
     const getCategory = asyncHandler(async(req, res) => {
-        const response = await ProductCategory.find().select('title _id')
+        const response = await ProductCategory.find()
         return res.json({
             success: response ? true : false,
             productCategories: response ? response : 'Cannot get product-category'

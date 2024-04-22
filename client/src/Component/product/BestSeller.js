@@ -1,6 +1,6 @@
 import React, { useEffect, useState,memo } from "react";
-import { apiGetProducts } from "../Api/product";
-import SettingSlider from "./SettingSlider";
+import { apiGetProducts } from "../../Api/product";
+import SettingSlider from "../search/SettingSlider";
 
 const tabs = [
   { id: 1, name: "best sellers" },

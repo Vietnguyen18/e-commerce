@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import storage from 'redux-persist/lib/storage'
-import userSlice from "./userSlice";
+import userSlice from "./user/userSlice";
 import { persistStore, persistReducer } from 'redux-persist'
+
+
+
 
 
 // luu du lieu khi login len local
@@ -11,13 +14,13 @@ const commonConfig = {
 }
 const userConfig = {
     ...commonConfig,
-    whitelist: ['isloggedIn','token']
+    whitelist: ['isLoggedIn','token', 'current']
 }
 
 
- const store = configureStore({
+export const store = configureStore({
     reducer: {
         user: persistReducer(userConfig,userSlice),
     }
 })
-export default  persistStore(store)
+export const persistor =  persistStore(store)

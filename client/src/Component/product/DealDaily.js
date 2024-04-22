@@ -1,9 +1,9 @@
 import React, {useEffect , useState, memo} from 'react'
-import icons from '../Ultils/icon'
-import { apiGetProducts } from '../Api/product'
-import {renderStarFromNumber,formatMoney} from '../Ultils/help'
-import CountDown from './CountDown'
-import { secondsTohms } from '../Ultils/help'
+import icons from '../../Ultils/icon'
+import { apiGetProducts } from '../../Api/product'
+import {renderStarFromNumber,formatMoney} from '../../Ultils/help'
+import CountDown from '../common/CountDown'
+import { secondsTohms } from '../../Ultils/help'
 
 const {AiFillStar, AiOutlineMenu} = icons
 let idInterval

@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React,{memo, useCallback, useState} from 'react'
-import { Button, InputField } from '../../Component'
+import { Button, InputField, Loading } from '../../Component'
 import { apiRegister, apiLogin } from '../../Api/user'
 import Swal from 'sweetalert2'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import path from '../../Ultils/path'
+import {login} from '../../Store/user/userSlice'
+import { useDispatch } from 'react-redux'
+import {showmodal} from '../../Store/app/appSlice'
 
 const Login = ()  => {
     const [payLoad, setPayLoad] = useState({
@@ -14,6 +17,10 @@ const Login = ()  => {
       lastname: '',
       mobile: ''
     })
+
+    //dispatch
+    const dispatch = useDispatch()
+
     //reset
     const resetPayload = () => {
       setPayLoad({
@@ -34,7 +41,9 @@ const Login = ()  => {
     const handleSubmit = useCallback(async() => {
         const {firstname, lastname, mobile ,...data} = payLoad
         if (isRegister) {
+          dispatch(showmodal({isShowModal: true, modalChildren: <Loading /> }))
           const response = await apiRegister(payLoad)
+          dispatch(showmodal({isShowModal: false, modalChildren: null }))
           if(response.success){
             Swal.fire('Congratulation', response.mes,'success').then(() =>{
               setIsRegister(false)
@@ -46,6 +55,7 @@ const Login = ()  => {
         }else{
           const rs = await apiLogin(data)
           if(rs.success){
+            dispatch(login({isLoggedIn: true, token: rs.accessToken, userData: rs.userData}))
             navigate(`/${path.HOME}`)
           }else{
             Swal.fire('Oops !!', rs.mes,'error')
@@ -68,8 +78,9 @@ const Login = ()  => {
                 {isRegister && <InputField value={payLoad.mobile} setValue={setPayLoad} nameKey='mobile' />}
                 <InputField value={payLoad.password} type='password' setValue={setPayLoad} nameKey='password' />
                 <Button 
-                  name= {isRegister ? 'Register' : 'Login'} 
+                  children= {isRegister ? 'Register' : 'Login'} 
                   handleOnclick={handleSubmit}
+                  fw
                 />
                 <div className=' flex w-full items-center justify-between my-2 text-sm'>
                     {!isRegister && <span className=' text-xs text-purple-600 hover:underline cursor-pointer'>Forgot your account</span>}

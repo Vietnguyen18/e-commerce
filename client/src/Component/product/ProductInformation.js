@@ -1,5 +1,5 @@
 import React,{memo, useState} from 'react'
-import {tabs} from '../Ultils/contants'
+import {tabs} from '../../Ultils/contants'
 
 
 //   const activedStyles = ''

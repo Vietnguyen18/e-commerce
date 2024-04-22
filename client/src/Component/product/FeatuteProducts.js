@@ -1,5 +1,5 @@
 import React,{useEffect ,useState, memo} from 'react'
-import { apiGetProducts } from '../Api/product'
+import { apiGetProducts } from '../../Api/product'
 import ProductCard from './ProductCard'
 import Slider from 'react-slick'
 

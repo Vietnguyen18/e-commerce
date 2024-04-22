@@ -1,9 +1,9 @@
 import React,{useState, memo} from 'react'
-import label from '../Assets/label1.png'
-import labelBlue from '../Assets/label2.png'
-import {renderStarFromNumber, formatMoney} from "../Ultils/help"
-import {SelectOption} from './'
-import icons from '../Ultils/icon'
+import label from '../../Assets/label1.png'
+import labelBlue from '../../Assets/label2.png'
+import {renderStarFromNumber, formatMoney} from "../../Ultils/help"
+import {SelectOption} from '..'
+import icons from '../../Ultils/icon'
 import { Link } from 'react-router-dom'
 
     const { FaEye, AiOutlineMenu, AiFillHeart} = icons

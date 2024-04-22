@@ -24,3 +24,18 @@ export function secondsTohms(d) {
 }
 
 export const fotmatPrice = number => Math.round(number /1000) * 1000
+
+export function getBase64(file) {
+    if(!file) return ''
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+  
+//   var file = document.querySelector('#files > input[type="file"]').files[0];
+//   getBase64(file).then(
+//     data => console.log(data)
+//   );

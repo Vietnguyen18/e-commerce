@@ -1,5 +1,5 @@
 import React,{memo} from 'react'
-import icons from '../Ultils/icon'
+import icons from '../../Ultils/icon'
 
 const {AiOutlinePlus,AiOutlineMinus} = icons
 

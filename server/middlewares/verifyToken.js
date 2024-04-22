@@ -27,7 +27,7 @@ const verifyAccessToken = asyncHandler(async(req, res, next) => {
     // Admin 
         const isAdmin = asyncHandler(async(req, res, next)=>{
             const {role} =req.user
-            if(role !=='admin')
+            if(+role !== 101)
             return res.status(401).json({
                 success: false,
                 mes: 'Require admin role'

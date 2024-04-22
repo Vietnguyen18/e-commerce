@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
-import { apiGetCategories } from "../Api/app";
+import { apiGetCategories } from "../../Api/app";
 import { NavLink } from "react-router-dom";
-import { createSlug } from "../Ultils/help";
+import { createSlug } from "../../Ultils/help";
 
 function Sidebar() {
   const [categories, setCategories] = useState(null);
@@ -14,6 +14,7 @@ function Sidebar() {
     fetchCategories();
   }, []);
   // console.log(categories);
+
   return (
     <div className=" relative mt-4 flex w-full flex-col justify-between rounded-lg bg-white p-1 border  ">
       {categories?.map((el) => (

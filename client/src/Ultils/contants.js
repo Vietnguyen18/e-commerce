@@ -121,3 +121,39 @@ export const tabs = [
 ]
 
 export const colors = ['black', 'brown', 'gray', 'white', 'pink', 'yellow', 'orange','purple','green','blue']
+
+
+ const {AiOutlineDashboard,FaUsers,FaProductHunt} = icons
+
+export const adminSidebar = [
+  {
+    id: 1,
+    type: 'SINGLE',
+    text: 'Dashboard',
+    path: `/${path.ADMIN}/${path.DASHBOARD}`,
+    icons: <AiOutlineDashboard />,
+  },
+  {
+    id: 2,
+    type: 'SINGLE',
+    text: 'Manage users',
+    path: `/${path.ADMIN}/${path.MANAGE_USER}`,
+    icons: <FaUsers />,
+  },
+  {
+    id: 3,
+    type: 'PARENT',
+    text: 'Manage products',
+    icons: <FaProductHunt />,
+    submenu: [
+      {
+        text: 'Create product',
+        path: `/${path.ADMIN}/${path.CREATE_PRODUCTS}`,
+      },
+      {
+        text: 'Manage product',
+        path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+      },
+    ]
+  }
+]

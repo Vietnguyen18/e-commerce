@@ -1,7 +1,7 @@
 import React, {memo} from 'react'
 import { Outlet } from 'react-router-dom' //tuong trung cho component con
-import {Footer, Header, Navigation, TopHeader} from '../../Component'
 import banner from '../../Assets/1712052486176_untitled_1_01_3.avif'
+import { Footer, Header, Navigation, TopHeader } from '../../Component'
 
 const Public = () => {
   return <>

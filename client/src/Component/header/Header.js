@@ -1,11 +1,19 @@
-import React, {memo} from 'react'
-import logo from '../Assets/logobanner.png'
-import icons from "../Ultils/icon"
+import React, {Fragment, memo, useEffect} from 'react'
+import logo from '../../Assets/logobanner.png'
+import icons from "../../Ultils/icon"
 import {Link} from 'react-router-dom'
-import path from '../Ultils/path'
+import path from '../../Ultils/path'
+import { getCurrent } from '../../Store/user/asysnActions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Header = () => {
     const {FaPhoneAlt, FaMapMarkerAlt,BsBoxSeam,FaBagShopping,FaUserCircle} = icons
+    const dispatch = useDispatch()
+    const {isLoggedIn, current} = useSelector(state => state.user)
+
+    useEffect(() => {
+        if (isLoggedIn) dispatch(getCurrent())
+    },[dispatch,isLoggedIn])
   return (
     <div className='border w-main h-[110px] flex justify-between '>
         <Link to={`/${path.HOME}`}>
@@ -26,7 +34,7 @@ const Header = () => {
                     <p className='px-2 text-[10px] font-bold  text-black hover:underline'>iPhone 15 Pro Max</p>
             </div>
         </div>
-        <div className='flex text-[13px] gap-1 pl-3 pt-5'>
+        <div className='flex text-[13px] gap-1 px-3 pt-5'>
             <div>
                 <span className='flex gap-5 items-center'>
                     <FaPhoneAlt className='w-6 h-6'/>
@@ -59,14 +67,16 @@ const Header = () => {
                     </span>
                 </span>
             </div>
-            <div>
+            {current && <Fragment>
+                <Link to={+current?.role === 101 ? `/${path.ADMIN}/${path.DASHBOARD}` : `/${path.MEMBER}/${path.PERSONAL}`}>
                 <span className='flex gap-5 items-center'>
                     <FaUserCircle className='w-6 h-6'/>
                     <span className='font-semibold text-black hover:underline cursor-pointer'>
-                        Đăng kí / Đăng nhập
+                        {isLoggedIn ? <smal>{`${current?.lastname} ${current?.firstname} `}</smal> : ' Đăng kí & Đăng nhập'}
                     </span>
                 </span>
-            </div>
+            </Link>
+            </Fragment>}
         </div>
     </div>
   )

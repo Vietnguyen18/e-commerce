@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React,{memo, useState, useEffect} from 'react'
-import icons from '../Ultils/icon'
-import { colors } from '../Ultils/contants'
+import icons from '../../Ultils/icon'
+import { colors } from '../../Ultils/contants'
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
 
 
