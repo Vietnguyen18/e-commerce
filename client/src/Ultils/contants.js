@@ -157,3 +157,14 @@ export const adminSidebar = [
     ]
   }
 ]
+
+export const roles = [
+  {
+    role: '101',
+    value: "Admin",
+  },
+  {
+    role: '102',
+    value: "User",
+  },
+]

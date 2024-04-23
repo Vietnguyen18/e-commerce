@@ -35,7 +35,3 @@ export function getBase64(file) {
     });
   }
   
-//   var file = document.querySelector('#files > input[type="file"]').files[0];
-//   getBase64(file).then(
-//     data => console.log(data)
-//   );

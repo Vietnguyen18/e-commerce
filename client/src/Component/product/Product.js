@@ -30,7 +30,7 @@ const Product = ({productData, isNew, normal}) => {
                     <SelectOption icon={<AiFillHeart/>}/>
                 </div>}
                 <img src={productData?.thumb || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkfJ5oMZl37l-4wuTZz28Om-VQV9e88XjKten66LPwvA&s'} alt='' className='w-[243px] h-[243px] object-cover'/>
-                {!normal && <img src={isNew ? label : labelBlue} alt='' className=' absolute top-[-16px] right-0 w-[50px] object-cover' />}
+                {!normal && <img src={isNew ? label : labelBlue } alt='' className=' absolute top-[-16px] right-0 w-[50px] object-cover' />}
                 <label className='font-bold top-[-3px] absolute text-white right-[9px]'>{isNew ? 'New' : 'Best'}</label>
             </div>
                 <div className='flex flex-col gap-1 mt-[15px] items-start w-full '>

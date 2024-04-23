@@ -34,7 +34,7 @@ const Home = () => {
     </div>
    <div className="my-8">
         <h3 className=' text-[20px font-semibold py-[15px] border-b-4 border-main uppercase' > New arrivals </h3>
-        <SettingSlider bestSeller={newProducts} />
+        <SettingSlider bestSeller={newProducts}/>
     </div>
     </div>
   );

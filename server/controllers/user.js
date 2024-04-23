@@ -195,11 +195,70 @@ const resetPassword = asyncHandler(async (req, res) => {
 
 // Get User
  const getUser = asyncHandler(async (req, res)=>{
-    const response =  await User.find().select('-refreshToken -password -role')
-    return res.status(200).json({
-        success: response  ? true : false,
-        user: response
-    })
+    // Filtering
+  const queries = { ...req.query }; // Destructure and copy query object
+  const excludeFields = ["limit", "sort", "page", "fields"];
+  excludeFields.forEach((e) => delete queries[e]);
+
+  // Format operators for Mongoose syntax
+  let queryString = JSON.stringify(queries);
+  queryString = queryString.replace(
+    /\b(gte|gt|lt|lte)\b/g,
+    (match) => `$${match}`
+  );
+  const formattedQueries = JSON.parse(queryString);
+
+  // Filter User
+  if (queries?.name)
+    formattedQueries.name = { $regex: queries.name, $options: "i" };
+  let queryCommand = User.find(formattedQueries);
+
+  if(req.query.q){
+    formattedQueries['$or'] = [
+            {name: { $regex: queries.q, $options: "i"}},
+            {email: { $regex: queries.q, $options: "i"}},
+    ]
+  }
+  console.log(formattedQueries);
+  // Sorting
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    queryCommand = queryCommand.sort(sortBy);
+  }
+  // Fields limiting
+  if (req.query.fields) {
+    const fields = req.query.fields.split(",").join(" ");
+    queryCommand = queryCommand.select(fields);
+  }
+
+
+  
+  // Pagination
+  //limit: số object lấy về 1 gọi api
+  // skip: 2
+  // 1 2 3 ... 10 (sẽ bỏ 2 số đầu)
+  const page = +req.query.page || 1;
+  const limit = +req.query.limit 
+  const skip = (page - 1) * limit;
+  queryCommand.skip(skip).limit(limit);
+
+  // Execute query
+  // Số lượng sp thỏa mãn điều kiện !== số lượng sp trả về 1 lần gọi API
+  try {
+    const [users, counts] = await Promise.all([
+      queryCommand.then((response) => response),
+      User.find(formattedQueries).countDocuments(),
+    ]);
+
+    res.status(200).json({
+      success: users.length > 0,
+      counts,
+      users,
+    });
+  } catch (err) {
+    console.error(err.message); // Log the error for debugging
+    res.status(500).json({ success: false, message: "Failed to get user" });
+  }
  })
  //delete user
  const deleteUser = asyncHandler(async (req, res)=>{

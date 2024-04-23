@@ -18,7 +18,7 @@ const SettingSlider = ({bestSeller, activedTab, normal}) => {
       {
         bestSeller && <Slider {...settings}>
         {bestSeller?.map((el) => (
-            <Product key={el.id} productData={el} isNew={activedTab === 1 ? false : true} pid={el.pid}  normal={true}/>
+            <Product key={el.id} productData={el} isNew={activedTab === 1 ? false : true} pid={el.pid}  normal={normal}/>
         ))}
             </Slider> 
       }

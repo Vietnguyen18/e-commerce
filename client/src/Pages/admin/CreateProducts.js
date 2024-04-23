@@ -8,6 +8,7 @@ import { apiGetCategories } from '../../Api'
 import Select from '../../Component/inputs/Select'
 import { Button, MarkdownEditor } from '../../Component'
 import { getBase64 } from '../../Ultils/help'
+import {toast} from 'react-toastify'
 
 
 const CreateProducts = () => {
@@ -54,24 +55,20 @@ const handlePreview =async (file) =>{
   const base64Thumb = await getBase64(file)
   setPreview(prev => ({ ...prev, thumb: base64Thumb }))
 }
-const handlePreviewImages = async (files) => {
-  const imagesPreview = [];
-  for (let file of files) {
-    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-      alert('File not supported');
-      return;
-    }
-    const base64 = await getBase64(file);
-    imagesPreview.push(base64);
-  }
-  if (imagesPreview.length > 0) setPreview(prev => ({ ...prev, images: imagesPreview }));
-};
+//
+
+const handlePreviewImages =async (file) =>{
+      const imagesPreview =[]
+          const base64 = await getBase64(file)
+          imagesPreview.push(base64)
+     if(imagesPreview.length > 0) setPreview(prev => ({ ...prev,images: imagesPreview}))
+}
 useEffect(() => {
   handlePreview(watch('thumb')[0])
 },[watch('thumb')])
-// useEffect(() => {
-//   handlePreviewImages(watch('images'))
-// },[watch('images')])
+useEffect(() => {
+  handlePreviewImages(watch('images'))
+},[watch('images')])
 console.log(preview);
   
 
@@ -183,16 +180,16 @@ console.log(preview);
                               {...register('products', {required: 'Need fill'})}
                             />
                             {errors['products'] && <small className=' text-xs text-red-500'>{errors['products']?.message}</small>}
+                      </div>
                             {
-                              preview.images.length > 0 && <div className=' my-4 flex w-full gap-3 flex-wrap'>
+                              preview?.images.length > 0 && <div className=' my-4 flex w-full gap-3 flex-wrap'>
                                     {
-                                      preview?.images?.map((el, idx) => (
-                                        <img src={el} alt='product_images' key={idx} className=' w-[200px] object-contain '/>
+                                      preview.images?.map((el, idx) => (
+                                        <img src={el} alt='product_images' key={idx} className=' w-[200px] object-contain'/>
                                       ))
                                     }
                               </div>
                             }
-                      </div>
               {/* button */}
               <div className=' flex gap-2'>
               <Button type='submit'>
