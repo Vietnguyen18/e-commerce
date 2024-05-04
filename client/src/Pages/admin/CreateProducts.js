@@ -4,7 +4,7 @@
 import React, {memo, useCallback, useEffect, useState, } from 'react'
 import { useForm } from 'react-hook-form'
 import InputForm from '../../Component/inputs/InputForm'
-import { apiGetCategories } from '../../Api'
+import { apiGetCategories, apiCreateProduct } from '../../Api'
 import Select from '../../Component/inputs/Select'
 import { Button, MarkdownEditor } from '../../Component'
 import { getBase64 } from '../../Ultils/help'
@@ -13,9 +13,6 @@ import {toast} from 'react-toastify'
 
 const CreateProducts = () => {
   
-
-  
-
   //api categories
   const [categories, setCategories] = useState(null);
   const fetchCategories = async () => {
@@ -42,35 +39,57 @@ const [preview, setPreview] = useState({
   images: []
 })
 //
-const handleCreateProduct = (data) =>{
-  if(data.category) data.category = categories?.find(el => el._id === data.category)?.title
-  const finalPayload = {...data, ...payload }
-  console.log(finalPayload);
-  const formData = new FormData()
-      for(let i of Object.entries(finalPayload)) formData.append(i[0],i[1])
-}
-//
 
 const handlePreview =async (file) =>{
   const base64Thumb = await getBase64(file)
   setPreview(prev => ({ ...prev, thumb: base64Thumb }))
 }
-//
 
-const handlePreviewImages =async (file) =>{
-      const imagesPreview =[]
-          const base64 = await getBase64(file)
-          imagesPreview.push(base64)
-     if(imagesPreview.length > 0) setPreview(prev => ({ ...prev,images: imagesPreview}))
+const handlePreviewImages = async(files) =>{
+  const imagesPreview = []
+  for( let file of files ) {
+      if(file.type !== 'image/png' && file.type !== 'image/jpeg'){
+          toast.warning('File not supported !')
+          return
+      }
+      const base64 = await getBase64(file)
+      imagesPreview.push({name: file.name,path: base64})
+  }
+  setPreview(prev =>({ ...prev, images: imagesPreview}))
 }
+
 useEffect(() => {
-  handlePreview(watch('thumb')[0])
+  if(watch('thumb')){
+      handlePreview(watch('thumb')[0])
+  }
 },[watch('thumb')])
 useEffect(() => {
-  handlePreviewImages(watch('images'))
+  if(watch('images')){
+      handlePreviewImages(watch('images'))
+  }
 },[watch('images')])
-console.log(preview);
-  
+// submit handle
+const handleCreateProduct = async (data) =>{
+  if(data.category) data.category = categories?.find(el => el._id === data.category)?.title
+  const finalPayload = {...data, ...payload }
+  console.log(finalPayload);
+  const formData = new FormData()
+      for(let i of Object.entries(finalPayload)) formData.append(i[0],i[1])
+      if(finalPayload.thumb) formData.append('thumb', finalPayload.thumb[0])
+      if(finalPayload.products) {
+        for( let image of finalPayload.products) formData.append('images', image)
+      }
+      const response = await apiCreateProduct(formData)
+    if(response.success){
+      toast.success(response.mes)
+      reset()
+      setPayload({
+        thumb:'',
+        image:[]
+      })
+    }else toast.error(response.mes)
+}
+
 
   return (
     <div className=' w-full'>
@@ -181,22 +200,19 @@ console.log(preview);
                             />
                             {errors['products'] && <small className=' text-xs text-red-500'>{errors['products']?.message}</small>}
                       </div>
-                            {
-                              preview?.images.length > 0 && <div className=' my-4 flex w-full gap-3 flex-wrap'>
-                                    {
-                                      preview.images?.map((el, idx) => (
-                                        <img src={el} alt='product_images' key={idx} className=' w-[200px] object-contain'/>
-                                      ))
-                                    }
-                              </div>
-                            }
+                      {
+                        preview.images.length > 0 && <div className=' my-4 flex w-full gap-3 flex-wrap'>
+                               {
+                                preview.images.map((el,idx) => (
+                                    <img key={idx} src={el} alt='products' className=' w-[200px] object-contain'/>
+                                ))
+                               }
+                        </div>
+                      }
               {/* button */}
               <div className=' flex gap-2'>
               <Button type='submit'>
                   Create new Product
-              </Button> 
-              <Button type='submit'>
-                  Reset
               </Button> 
               </div>
           </form>

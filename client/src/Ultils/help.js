@@ -34,4 +34,9 @@ export function getBase64(file) {
       reader.onerror = error => reject(error);
     });
   }
+
+  export const generateRange = (start, end) => {
+       const length = end+1 - start
+       return Array.from({length},(_, index) => start + index )
+  }
   

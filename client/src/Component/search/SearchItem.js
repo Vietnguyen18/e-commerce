@@ -2,13 +2,20 @@
 import React,{memo, useState, useEffect} from 'react'
 import icons from '../../Ultils/icon'
 import { colors } from '../../Ultils/contants'
-import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
+import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { apiGetProducts } from '../../Api'
 
 
 const {AiFillCaretDown } = icons
 
 const SearchItem = ({name, activeClick,ChangeActive, type = 'checkbox'}) => {
     const [selected, setSelected] = useState([])
+    const [bestPrice, setBestPrice] = useState(null)
+    // const [price, setPrice] = useState({
+    //     from: '',
+    //     to: '',
+    // })
+    const [params] = useSearchParams()
     const navigate = useNavigate()
     const {category} = useParams()
     const handlerSelect = (e) =>{
@@ -17,16 +24,30 @@ const SearchItem = ({name, activeClick,ChangeActive, type = 'checkbox'}) => {
         else setSelected(prev => [...prev, e.target.value])
         ChangeActive(null)
     }
-    console.log(selected);
+   const fetchBestPriceProduct = async () => {
+    const response = await apiGetProducts({sort: '-price', limit: 1})
+    if(response.success) setBestPrice(response.products[0]?.price)
+   }
         
     useEffect(() => {
-        navigate({
-            pathname:  `/${category}`,
-            search: createSearchParams({
-                color: selected.join(',')
-            }).toString()
-        })
+        if(selected.length > 0){
+            let param = []
+            for (let i of params.entries()) param.push(i)
+            const queries = {}
+            for(let i of param) queries[i[0]] = i[1]
+            queries.color = selected.join(',')
+            queries.page = 1
+            navigate({
+                pathname:  `/${category}`,
+                search: createSearchParams(queries).toString()
+            })
+        }else{
+            navigate(`/${category}`)
+        }
     },[selected])
+    useEffect(() => {
+        if(type === 'input') fetchBestPriceProduct()
+    },[type])
   return (
     <div onClick={()=>ChangeActive(name)} className=' p-4 text-sm relative border-gray-800 justify-between items-center flex gap-6 border text-gray-500'>
         <span className=' capitalize '>{name}</span>
@@ -52,9 +73,9 @@ const SearchItem = ({name, activeClick,ChangeActive, type = 'checkbox'}) => {
                                 <div key={index} className=' flex items-center gap-4'>
                                     <input
                                      type='checkbox' 
-                                     className=' w-4 h-4 rounded border-gray-300 focus:ring-blue-500'
+                                     className=' form-checkbox'
                                      value={el}
-                                     onClick={handlerSelect}
+                                     onChange={handlerSelect}
                                      id={el}
                                      checked={selected.some(selectedItem => selectedItem === el)}
                                      />

@@ -12,3 +12,14 @@ export const apiGetProducts = (params) =>
       url: "/product/" + pid,
       method: "get",
     });
+  export const apiCreateProduct = (pid) =>
+    axios({
+      url: "/product/" + pid,
+      method: "get",
+    });
+  export const apiUpdateProduct = (data,pid) =>
+    axios({
+      url: "/product/" + pid,
+      method: "put",
+      data
+    });

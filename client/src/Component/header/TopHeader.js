@@ -22,8 +22,7 @@ const TopHeader = () => {
           {isLoggedIn ? <div className=' flex gap-4 text-sm items-center'>
               <span>{`Welcome, ${current?.lastname} ${current?.firstname}`}</span>
               <span className=' hover:rounded-full hover:bg-gray-200 p-2 hover:text-main' onClick={()=> dispatch(logout())}><FiLogOut size={18}/></span>
-            </div> 
-            : <Link className=' hover:text-gray-800' to={`/${path.LOGIN}`}>Sign In or Create Account</Link>}
+            </div> : <Link className=' hover:text-gray-800' to={`/${path.LOGIN}`}>Sign In or Create Account</Link>}
         </div>
     </div>
   ) 

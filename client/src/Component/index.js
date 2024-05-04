@@ -24,3 +24,7 @@ export { default as InputForm} from "./inputs/InputForm";
 export { default as Select} from "./inputs/Select"
 export { default as MarkdownEditor} from "./inputs/MarkdownEditor"
 export { default as useDebounce} from "./hooks/useDebounce"
+export { default as Pagination} from "./pagination/Pagination"
+export { default as PagiItem} from "./pagination/PagiItem"
+export { default as usePagination} from "./hooks/usePagination"
+export { default as InputSelect} from "./inputs/InputSelect"

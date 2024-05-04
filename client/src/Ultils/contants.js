@@ -160,11 +160,49 @@ export const adminSidebar = [
 
 export const roles = [
   {
-    role: '101',
+    code: '101',
     value: "Admin",
   },
   {
-    role: '102',
+    code: '102',
     value: "User",
+  },
+]
+
+export const sorts = [
+  {
+    id: 1,
+    value: '-sold',
+    text: 'Best selling'
+  },
+  {
+    id: 2,
+    value: '-title',
+    text: 'Alphabetically, A-Z'
+  },
+  {
+    id: 3,
+    value: 'title',
+    text: 'Alphabetically, Z-A'
+  },
+  {
+    id: 4,
+    value: '-price',
+    text: 'Price, hight to low '
+  },
+  {
+    id: 5,
+    value: 'price',
+    text: 'Price, hight to hight '
+  },
+  {
+    id: 6,
+    value: '-createdAt',
+    text: 'Date, new to old '
+  },
+  {
+    id: 7,
+    value: 'createdAt',
+    text: 'Date, old to new '
   },
 ]

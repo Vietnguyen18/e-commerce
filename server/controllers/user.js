@@ -211,6 +211,15 @@ const resetPassword = asyncHandler(async (req, res) => {
   // Filter User
   if (queries?.name)
     formattedQueries.name = { $regex: queries.name, $options: "i" };
+  if( req.query.q){
+        delete formattedQueries.q
+        formattedQueries['$or'] = [
+            {firstname: {$regex: req.query.q, $options: 'i'}},
+            {lastname: {$regex: req.query.q, $options: 'i'}},
+            {email: {$regex: req.query.q, $options: 'i'}}
+        ]
+  }
+  console.log(formattedQueries);
   let queryCommand = User.find(formattedQueries);
 
   if(req.query.q){
@@ -262,12 +271,12 @@ const resetPassword = asyncHandler(async (req, res) => {
  })
  //delete user
  const deleteUser = asyncHandler(async (req, res)=>{
-    const { _id } = req.query
-    if( !_id ) throw new Error('Missing inputs')
-    const response =  await User.findByIdAndDelete( _id )
+    const { uid } = req.params
+    // if( !_id ) throw new Error('Missing inputs')
+    const response =  await User.findByIdAndDelete( uid )
     return res.status(200).json({
         success: response  ? true : false,
-        deletedUser: response ? `User with email ${response.email} delete` : 'No user delete'
+        mes: response ? `User with email ${response.email} delete` : 'No user delete'
     })
  })
  //update user
@@ -277,7 +286,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     const response =  await User.findByIdAndUpdate( _id, req.body, {new: true} ).select('-refreshToken -password -role')
     return res.status(200).json({
         success: response  ? true : false,
-        deletedUser: response ? response : 'Some thing went wrong'
+        updatedUser: response ? response : 'Some thing went wrong'
     })
  })
 
@@ -288,7 +297,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     const response =  await User.findByIdAndUpdate( uid, req.body, {new: true} ).select(' -refreshToken -password -role')
     return res.status(200).json({
         success: response  ? true : false,
-        deletedUser: response ? response : 'Some thing went wrong'
+        mes: response ? 'Updated' : 'Some thing went wrong'
     })
  })
 
@@ -299,7 +308,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     const response =  await User.findByIdAndUpdate(_id, {$push: {address: req.body.address}}, {new: true} ).select(' -refreshToken -password -role')
     return res.status(200).json({
         success: response  ? true : false,
-        updateAddressUser: response ? response : 'Some thing went wrong'
+        updatedAddressUser: response ? response : 'Some thing went wrong'
     })
  })
  //update cart

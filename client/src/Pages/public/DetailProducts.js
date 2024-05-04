@@ -8,6 +8,7 @@ import { formatMoney, fotmatPrice, renderStarFromNumber } from '../../Ultils/hel
 import {extraInfor} from '../../Ultils/contants'
 import BreadCrumb from '../../Component/common/BreadCrumb';
 import { ExtraInfor, ProductInformation, SelectQuantity, SettingSlider } from '../../Component';
+import DOMPurify from 'dompurify';
 
 const DetailProducts = () => {
   const {pid, title, category } = useParams()
@@ -72,7 +73,7 @@ const DetailProducts = () => {
         </div>
         <div className=' w-main m-auto mt-4 flex '>
               <div className=' flex flex-col gap-4 w-2/5'>
-                <div className='h-[458px] w-[458px] border object-cover'>
+                <div className='h-[458px] w-[458px] flex items-center border object-cover'>
                     <ReactImageMagnify {...{
                         smallImage: {
                         alt: '',
@@ -107,7 +108,8 @@ const DetailProducts = () => {
                           <span className=' text-sm text-[#994b36] italic'>{`(Đã bán: ${product?.sold} cái)`}</span>
                     </div>
                     <ul className='text-sm to-gray-500 pt-2 list-square pl-5'>
-                        {product?.description?.map(el => (<li key={el} className=' leading-6 '>{el}</li>))}
+                        {product?.description?.length > 1 && product?.description?.map(el => (<li key={el} className=' leading-6 '>{el}</li>))}
+                        {product?.description?.length === 1 && <div className='text-sm line-clamp-6' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(product?.description[0])}}></div>}
                     </ul>
                     <div className=' flex flex-col gap-8 mt-3'>
                       <div className=' flex items-center gap-4'>

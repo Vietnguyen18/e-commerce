@@ -63,3 +63,7 @@ button.slick-prev::before{
 input{
     --webkit-appearance: none
 }
+
+code{
+    white-space: initial;
+}

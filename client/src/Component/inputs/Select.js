@@ -3,10 +3,9 @@ import React, { memo } from 'react'
 
 const Select = ({label, options = [] , register, errors, id, validate, fullWidth, defaultValue, style}) => {
   return (
-    <div>
-        <div className=' flex flex-col gap-2'>
-            {label && <label htmlFor={id} className=' mt-2'>{label}</label>}
-            <select
+    <div className=' flex flex-col gap-2'>
+       {label && <label htmlFor={id}>{label}</label>}
+       <select
                 defaultValue={defaultValue}
                 className={clsx('form-select', fullWidth && 'w-full', style)}
                 id= {id}    
@@ -20,7 +19,6 @@ const Select = ({label, options = [] , register, errors, id, validate, fullWidth
                 }
             </select>
             {errors[id] && <small className=' text-xs text-red-500'>{errors[id]?.message}</small>}
-        </div>
     </div>
   )
 }
