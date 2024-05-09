@@ -124,7 +124,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   });
   return res.status(200).json({
     success: updatedProduct ? true : false,
-    productData: updatedProduct ? updatedProduct : "Cannot updated Product",
+    mes: updatedProduct ? 'Update done' : "Cannot updated Product",
   });
 });
 const deleteProduct = asyncHandler(async (req, res) => {
@@ -133,7 +133,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const deletedProduct = await Product.findByIdAndDelete(pid);
   return res.status(200).json({
     success: deletedProduct ? true : false,
-    productData: deletedProduct ? deletedProduct : "Cannot deleted Product",
+    mes: deletedProduct ? 'Delete done' : "Cannot deleted Product",
   });
 });
 

@@ -20,10 +20,12 @@ module.exports = {
       },
       backgroundColor: {
         main: '#be1e2d',
+        overLay: 'rgba(9, 9, 9, 0.5)'
       },
       colors: {
         main: '#be1e2d',
       },
+
       keyframes: {
         'slide-top' : {
           '0%' : {

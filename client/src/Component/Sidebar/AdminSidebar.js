@@ -4,7 +4,6 @@ import { adminSidebar } from '../../Ultils/contants'
 import { NavLink, Link } from 'react-router-dom'
 import clxs from 'clsx'
 import { AiOutlineCaretDown, AiOutlineCaretLeft } from 'react-icons/ai'
-import { BiLogOut } from "react-icons/bi";
 import path from '../../Ultils/path'
 
 
@@ -22,9 +21,10 @@ const AdminSidebar = () => {
 
   return (
     <div className=' bg-sky-800 h-full py- 4'>
-        <Link to={`/${path.HOME}`} ><BiLogOut size={30} className=' text-white left-2 flex w-[30px]'/></Link>
         <div className=' flex flex-col items-center justify-center p-4'>
+        <Link to={`/${path.HOME}`} >
             <img src={logo} alt='logo' className=' w-[150px] object-contain'  />
+        </Link>
             <small className=' text-center flex items-center text-white text-xl'>Admin Workspace</small>
         </div>
         <div>

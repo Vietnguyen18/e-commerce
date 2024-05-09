@@ -2,11 +2,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { InputForm, Pagination } from '../../Component'
 import { useForm } from 'react-hook-form'
-import { apiGetProducts } from '../../Api'
+import { apiDeleteProduct, apiGetProducts } from '../../Api'
 import moment from 'moment'
 import { createSearchParams, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import useDebounce from '../../Component/hooks/useDebounce'
 import UpdateProducts from './UpdateProducts'
+import Swal from 'sweetalert2'
+import { toast } from 'react-toastify'
 
 const ManagerProducts = () => {
 
@@ -19,6 +21,8 @@ const ManagerProducts = () => {
   const [isEdit, setIsEdit] = useState(null)
   const [isUpdate, setIsUpdate] = useState(false)
 
+
+  // nhận giá trị trong ô search
   const queryDebounce = useDebounce(watch('q'), 800)
 
   const fetchProducts = async(params) => {
@@ -51,8 +55,25 @@ const ManagerProducts = () => {
     fetchProducts(searchParams)
   },[params, isUpdate])
 
-  // Edit
-
+  // delete
+    const handleDeleteProduct = (pid) =>{
+      console.log(pid);
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Are you sure remove this product?',
+        icon: 'warning',
+        showCancelButton: true,
+    }).then(async(rs)=>{
+      if(rs.isConfirmed){
+        const response = await apiDeleteProduct(pid)
+        if(response.success){ 
+          toast.success(response.mes)
+        }
+          else toast.error(response.mes)
+          render()
+      }
+    })
+    }
 
   return (
     <div className=' w-full flex flex-col gap-4 relative'>
@@ -113,7 +134,7 @@ const ManagerProducts = () => {
                         <td className=' py-2 text-center '>{moment(el.createdAt).format('DD/MM/YYYY')}</td>
                         <td className=' py-2 text-center '>
                              <span className=' px-2 text-orange-600 hover:underline cursor-pointer' onClick={()=> setIsEdit(el)} >Edit</span>
-                             <span className=' px-2 text-orange-600 hover:underline cursor-pointer'>Delete</span>
+                             <span className=' px-2 text-orange-600 hover:underline cursor-pointer' onClick={()=> handleDeleteProduct(el._id)}>Delete</span>
                          </td>
                     </tr>
                   ))

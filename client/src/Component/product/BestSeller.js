@@ -63,7 +63,7 @@ const BestSeller = () => {
         ))}
       </div>
       <div className=" mt-4">
-          <SettingSlider bestSeller={bestSeller} activedTab={activedTab} />
+          <SettingSlider products={products} activedTab={activedTab} />
       </div>
       {
         listBanners.map((el) => (

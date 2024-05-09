@@ -5,7 +5,7 @@
     import { Button, InputForm, MarkdownEditor, Select } from '../../Component';
     import { useForm } from 'react-hook-form'
     import { toast } from 'react-toastify';
-    import { apiGetCategories, apiUpdateProduct } from '../../Api';
+    import { apiGetCategories, apiUpdateProduct} from '../../Api';
     import { getBase64 } from '../../Ultils/help';
     import Swal from 'sweetalert2';
 
@@ -34,8 +34,12 @@
             brand: editProducts?.brand?.toLowerCase() || '',
         })
         setPayload({description: typeof editProducts?.description === 'object' ? editProducts?.description?.join(', ') : editProducts?.description})
+        setPreview({
+            thumb: editProducts?.thumb || "",
+            images: editProducts?.images || []
+        })
     },[editProducts])
-    console.log(editProducts);
+    console.log(editProducts.brand.toLowerCase());
     const [payload, setPayload] = useState({
         description: ''
     })
@@ -54,21 +58,17 @@
     const handlePreview =async (file) =>{
     const base64Thumb = await getBase64(file)
     setPreview(prev => ({ ...prev, thumb: base64Thumb }))
-    setPreview({
-        thumb: editProducts?.thumb || "",
-        images: editProducts?.images || []
-    })
     }
     const handlePreviewImages = async (files) => {
-        const imagesPreview = [];
-        for (let file of files) {
-            if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-                toast.warning('File not supported!');
-                return;
-            }
-            const base64 = await getBase64(file);
-            imagesPreview.push(base64);
+            const imagesPreview = [];
+            for (let file of files) {
+        if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+            toast.warning('File not supported!');
+            return;
         }
+        const base64 = await getBase64(file);
+        imagesPreview.push(base64);
+            }
         setPreview(prev => ({ ...prev, images: imagesPreview }));
     };
     useEffect(() => {
@@ -80,7 +80,7 @@
         if(watch('images')) {
             handlePreviewImages(watch('images'));
         }
-    }, [watch('images'), handlePreviewImages]);
+    }, [watch('images')]);
 
     // cancel
     const handleCancel = () => {
@@ -98,28 +98,23 @@
     // submit handle
     const handleUpdateProduct = async (data) =>{
         if (data.category) data.category = categories?.find(el => el.title === data.category)?.title;
-        const finalPayload = { ...data, ...payload, ...preview };
-        console.log(finalPayload);
-        
+        const finalPayload = { ...data, ...payload};
+        finalPayload.thumb = data?.thumb?.length === 0 ? preview.thumb : data.thumb[0]
         const formData = new FormData();
         for (let i of Object.entries(finalPayload)) formData.append(i[0], i[1]);
-        if (finalPayload.thumb) formData.append('thumb', finalPayload.thumb[0]);
-        if (finalPayload.products) {
-            for (let image of finalPayload.products) formData.append('images', image);
-        }
-        
-        const response = await apiUpdateProduct(formData);
+        finalPayload.images = data?.images?.length === 0 ? preview.images : data.images
+        for(let image of finalPayload.images) formData.append('images', image)
+        const response = await apiUpdateProduct(formData, editProducts._id);
+        console.log(response);
         if (response.success) {
             toast.success(response.mes);
-            reset();
-            setPayload({
-                thumb: '',
-                images: []
-            });
+            render()
+            setEditProducts(null);
         } else {
             toast.error(response.mes);
         }
     }
+
 
     return (
         <div className=' w-full flex flex-col gap-4 relative'>
@@ -193,7 +188,7 @@
                         />
                         <Select 
                         label='Brand (Optinal)'
-                        options={categories?.find(el => el.title === watch('category'))?.brand?.map(el =>({code: el.toLowerCase(), value: el})) || []}
+                        options={categories?.find(el => el.title === watch('category'))?.brand?.map(el =>({code: el.toLowerCase() , value: el}))}
                         register={register}
                         id='brand'
                         validate={{required: 'Need fill this field'}}
@@ -220,18 +215,32 @@
                                 />
                                 {errors['thumb'] && <small className=' text-xs text-red-500'>{errors['thumb']?.message}</small>}
                         </div>
-                        
+                        {
+                        preview?.thumb && <div className=' my-4'>
+                               <img src={preview.thumb} alt='thumbnail' className=' w-[200px] object-contain'/>
+                        </div>
+                      }
                         <div className=' flex flex-col gap-2 my-8'>
-                                <label className=' font-semibold' htmlFor='products'>Upload images of product</label>
+                                <label className=' font-semibold' htmlFor='images'>Upload images of product</label>
                                 <input 
                                     type='file' 
-                                    id='products' 
+                                    id='images' 
                                     multiple
-                                {...register('products')}
+                                {...register('images')}
                                 />
-                                {errors['products'] && <small className=' text-xs text-red-500'>{errors['products']?.message}</small>}
+                                {errors['images'] && <small className=' text-xs text-red-500'>{errors['images']?.message}</small>}
                         </div>
-                       
+                        {
+                        preview.images.length > 0 && <div className=' my-4 flex w-full gap-3 flex-wrap'>
+                               {
+                                preview.images?.map((el,idx) => (
+                                    <div key={idx}  className=' w-fit relative'>
+                                      <img src={el} alt='products' className=' w-[200px] object-contain' />
+                                    </div>
+                                ))
+                               }
+                        </div>
+                      }
                 {/* button */}
                 <div className=' flex gap-2'>
                 <Button type='submit'>

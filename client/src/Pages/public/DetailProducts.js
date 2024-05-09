@@ -10,13 +10,13 @@ import BreadCrumb from '../../Component/common/BreadCrumb';
 import { ExtraInfor, ProductInformation, SelectQuantity, SettingSlider } from '../../Component';
 import DOMPurify from 'dompurify';
 
-const DetailProducts = () => {
+const DetailProducts = ({normal}) => {
   const {pid, title, category } = useParams()
   console.log(pid, title);
   const [product, setProduct] = useState(null)
   const [relatedProducts, setRelatedProducts] = useState(null)
   const [quantity, setQuantity] = useState(1)
-  console.log(relatedProducts);
+  console.log(product);
 
   const fetchProductData = async () => {
     const response = await apiGetProduct(pid)
@@ -133,7 +133,7 @@ const DetailProducts = () => {
             </div>
             <div className='w-main m-auto mt-8'>
               <h3 className=' text-[20px font-semibold py-[15px] border-b-4 border-main uppercase' > orther customer also liked </h3>
-              <SettingSlider bestSeller={relatedProducts} normal={true}/>
+              <SettingSlider products={relatedProducts} normal={true}/>
             </div>
         <div className=' h-[500px]'></div>
     </div>

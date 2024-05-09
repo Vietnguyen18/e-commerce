@@ -2,13 +2,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/style-prop-object */
 import React, {memo, useCallback, useEffect, useState, } from 'react'
-import { useForm } from 'react-hook-form'
+import {useForm } from 'react-hook-form'
 import InputForm from '../../Component/inputs/InputForm'
 import { apiGetCategories, apiCreateProduct } from '../../Api'
 import Select from '../../Component/inputs/Select'
 import { Button, MarkdownEditor } from '../../Component'
 import { getBase64 } from '../../Ultils/help'
 import {toast} from 'react-toastify'
+import { RiDeleteBin2Fill } from "react-icons/ri";
 
 
 const CreateProducts = () => {
@@ -24,6 +25,8 @@ const CreateProducts = () => {
   }, []);
   //
   const {register, formState: {errors}, reset, handleSubmit, watch} = useForm()
+
+  // lưu gia tri của description
   
   const [payload, setPayload] = useState({
     description: ''
@@ -33,42 +36,49 @@ const CreateProducts = () => {
     setPayload(e)
   },[payload])
 
+  const [iHoverDelete, setIHoverDelete] = useState(null)
+
 //images
 const [preview, setPreview] = useState({
   thumb: null,
   images: []
 })
+console.log(preview);
 //
-
 const handlePreview =async (file) =>{
-  const base64Thumb = await getBase64(file)
-  setPreview(prev => ({ ...prev, thumb: base64Thumb }))
+    const base64Thumb = await getBase64(file);
+    setPreview(prev => ({ ...prev, thumb: base64Thumb }));
 }
 
-const handlePreviewImages = async(files) =>{
-  const imagesPreview = []
-  for( let file of files ) {
-      if(file.type !== 'image/png' && file.type !== 'image/jpeg'){
-          toast.warning('File not supported !')
-          return
+const handlePreviewImages = async (files) => {
+  const imagesPreview = [];
+  for (let file of files) {
+      if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+          toast.warning('File not supported!');
+          return;
       }
-      const base64 = await getBase64(file)
-      imagesPreview.push({name: file.name,path: base64})
+      const base64 = await getBase64(file);
+      imagesPreview.push({name: file.name,path: base64});
   }
-  setPreview(prev =>({ ...prev, images: imagesPreview}))
+  setPreview(prev => ({ ...prev, images: imagesPreview }));
+};
+useEffect(() => {
+   handlePreview(watch('thumb')[0])
+},[watch('thumb')])
+useEffect(() => {  
+      handlePreviewImages(watch('images'));
+}, [watch('images')]);
+
+// delete images
+const handelRemoveImages =(name)=>{
+  const files = [...watch('images')]
+    if(preview.images?.some(el => el.name === name)) setPreview(prev => ({ ...prev, images: prev.images?.filter(el => el.name !== name) }));
+    reset({
+      images: files?.filter(el=>el.name !== name)
+    })
 }
 
-useEffect(() => {
-  if(watch('thumb')){
-      handlePreview(watch('thumb')[0])
-  }
-},[watch('thumb')])
-useEffect(() => {
-  if(watch('images')){
-      handlePreviewImages(watch('images'))
-  }
-},[watch('images')])
-// submit handle
+
 const handleCreateProduct = async (data) =>{
   if(data.category) data.category = categories?.find(el => el._id === data.category)?.title
   const finalPayload = {...data, ...payload }
@@ -89,7 +99,6 @@ const handleCreateProduct = async (data) =>{
       })
     }else toast.error(response.mes)
 }
-
 
   return (
     <div className=' w-full'>
@@ -191,20 +200,29 @@ const handleCreateProduct = async (data) =>{
                         </div>
                       }
                       <div className=' flex flex-col gap-2 my-8'>
-                            <label className=' font-semibold' htmlFor='products'>Upload images of product</label>
+                            <label className=' font-semibold' htmlFor='images'>Upload images of product</label>
                             <input 
                                 type='file' 
-                                id='products' 
+                                id='images' 
                                 multiple
-                              {...register('products', {required: 'Need fill'})}
+                              {...register('images', {required: 'Need fill'})}
                             />
-                            {errors['products'] && <small className=' text-xs text-red-500'>{errors['products']?.message}</small>}
+                            {errors['images'] && <small className=' text-xs text-red-500'>{errors['images']?.message}</small>}
                       </div>
                       {
                         preview.images.length > 0 && <div className=' my-4 flex w-full gap-3 flex-wrap'>
                                {
-                                preview.images.map((el,idx) => (
-                                    <img key={idx} src={el} alt='products' className=' w-[200px] object-contain'/>
+                                preview.images?.map((el,idx) => (
+                                    <div key={idx}  className=' w-fit relative' onMouseEnter={()=>setIHoverDelete(el.name)} onMouseLeave={()=>setIHoverDelete(null)}>
+                                      <img src={el.path} alt='products' className=' w-[200px] object-contain' />
+                                      {iHoverDelete === el.name && <div 
+                                        className=' absolute cursor-pointer inset-0 bg-overLay flex items-center justify-center'
+                                        onClick={()=> handelRemoveImages(el.name)}
+                                      >
+                                          <RiDeleteBin2Fill size={24} color='white'/>
+                                      </div>
+                                      }
+                                    </div>
                                 ))
                                }
                         </div>

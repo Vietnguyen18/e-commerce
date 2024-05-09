@@ -17,7 +17,7 @@ const ManageUser = () => {
     q: ''
   })
   const [params] = useSearchParams()
-  const {register, formState: {errors}, reset, handleSubmit, watch} = useForm({
+  const {register, formState: {errors}, handleSubmit} = useForm({
     email: '',
     firstname:'',
     lastname:'',
@@ -37,7 +37,7 @@ const ManageUser = () => {
       setIsUpdate(!isUpdate)
     },[isUpdate])
 
-//
+// lây gia tri tron go search
   const queriesDebounce = useDebounce(queries.q,800)
     useEffect(() => {
       const queries = Object.fromEntries([ ...params])
@@ -73,6 +73,19 @@ const ManageUser = () => {
         }
       })
     }
+    // back
+    const handleBack = () => {
+      Swal.fire({
+          title: 'Are you sure?',
+          text: 'Are you ready to cancel editing?',
+          showCancelButton: true,
+      }).then((result) => {
+          if (result.isConfirmed) {
+              setIsEdit(null);
+          }
+      });
+  };
+
   return (
     <div className=' w-full'>
       <h1 className=' h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b'>
@@ -170,7 +183,7 @@ const ManageUser = () => {
                          <td className=' py-2 px-4 '>{el.isBlocked ? 'Blocked' : 'Active'}</td>
                          <td className=' py-2 px-4 '>{moment(el.createdAt).format('DD/MM/YYYY')}</td>
                          <td className=' py-2 px-4 '>
-                             {isEdit?._id === el._id ? <span className=' px-2 text-orange-600 hover:underline cursor-pointer' onClick={() => setIsEdit(null)}>Back</span> : 
+                             {isEdit?._id === el._id ? <span className=' px-2 text-orange-600 hover:underline cursor-pointer' onClick={() => handleBack(el)}>Back</span> : 
                              <span className=' px-2 text-orange-600 hover:underline cursor-pointer' onClick={() => setIsEdit(el)}>Edit</span>}
                              <span className=' px-2 text-orange-600 hover:underline cursor-pointer' onClick={()=>handleDelete(el._id)}>Delete</span>
                          </td>

@@ -12,12 +12,12 @@ const settings = {
     autoplaySpeed: 3000,
   };
 
-const SettingSlider = ({bestSeller, activedTab, normal}) => {
+const SettingSlider = ({products, activedTab, normal}) => {
   return (
     <>
       {
-        bestSeller && <Slider {...settings}>
-        {bestSeller?.map((el) => (
+        products && <Slider {...settings}>
+        {products?.map((el) => (
             <Product key={el.id} productData={el} isNew={activedTab === 1 ? false : true} pid={el.pid}  normal={normal}/>
         ))}
             </Slider> 
