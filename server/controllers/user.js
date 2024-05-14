@@ -216,7 +216,8 @@ const resetPassword = asyncHandler(async (req, res) => {
         formattedQueries['$or'] = [
             {firstname: {$regex: req.query.q, $options: 'i'}},
             {lastname: {$regex: req.query.q, $options: 'i'}},
-            {email: {$regex: req.query.q, $options: 'i'}}
+            {email: {$regex: req.query.q, $options: 'i'}},
+            {role: {$regex: req.query.q, $options: 'i'}}
         ]
   }
   console.log(formattedQueries);

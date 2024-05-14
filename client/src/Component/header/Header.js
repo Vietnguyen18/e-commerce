@@ -19,7 +19,7 @@ const Header = () => {
         <Link to={`/${path.HOME}`}>
         <img src={logo} alt="logo" className='w-[320px] object-contain'/>
         </Link>
-        <div className='flex relative flex-col w-[340px]'>
+        {/* <div className='flex relative flex-col w-[340px]'>
             <div className='mx-auto w-full text-gray-600 pt-5'>
                 <input type='text' placeholder='Tìm Kiếm.....' className='h-10 w-full rounded-lg border-2 border-gray-300 bg-white px-4 pr-16 text-sm focus:outline-none'/>
                 <span className='absolute right-0 top-7 mr-4'>
@@ -33,8 +33,8 @@ const Header = () => {
                     <p className='px-2 text-[10px] font-bold  text-black hover:underline'>iPhone 15 Pro Max</p>
                     <p className='px-2 text-[10px] font-bold  text-black hover:underline'>iPhone 15 Pro Max</p>
             </div>
-        </div>
-        <div className='flex text-[13px] gap-1 px-3 pt-5'>
+        </div> */}
+        <div className='flex text-[13px] gap-1 px-3 pt-5 justify-center items-center'>
             <div>
                 <span className='flex gap-5 items-center'>
                     <FaPhoneAlt className='w-6 h-6'/>

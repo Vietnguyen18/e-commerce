@@ -1,11 +1,11 @@
 const data = [
   {
     cate: "Smartphone",
-    brand: ["Apple", "Samsung", "LG", "Asus", "Nokia", "BlackBerry"],
+    brand: ["Apple","Samsung","Lg","Asus","Nokia","Blackberry","Xiaomi","Vivo"],
   },
   {
     cate: "Tablet",
-    brand: ["Apple", "Samsung", "Aces", "Asus", "Lenovo", "Haier"],
+    brand: ["Apple","Samsung","Aces","Asus","Lenovo","Huawei","Sony","Xiaomi","Lg"],
   },
   {
     cate: "Laptop",
@@ -13,23 +13,8 @@ const data = [
   },
   {
     cate: "Accessories",
-    brand: [
-      "Smartswatches",
-      "Headphone",
-      "Bluetooth",
-      "Keyboard",
-      "Mouse",
-      "Cases",
-    ],
-  },
-  {
-    cate: "Television",
-    brand: ["Apple", "Samsung", "LG"],
-  },
-  {
-    cate: "Printer",
-    brand: ["Samsung", "LG", "Asus", "Lenovo", "Haier"],
-  },
+    brand: ["Samsung","Motorola","Logitech","Jbl","Apple","Sennheiser"],
+  }
 ];
 
 module.exports = data;

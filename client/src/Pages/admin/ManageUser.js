@@ -97,8 +97,8 @@ const ManageUser = () => {
               nameKey={'q'}
               value={queries.q}
               setValue={setQueries}
-              style='w-[500px]'
-              placeholder='Search name user....'
+              style='w-[502px]'
+              placeholder='Search name, email, role user....'
               isHideLabel
             />
         </div>

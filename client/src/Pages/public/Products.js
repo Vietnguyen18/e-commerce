@@ -21,7 +21,6 @@ const Products = () => {
   const [products, setProducts] = useState(null)
   const [activeClick, setActiveClick] = useState(null)
   const [sort, setSort] = useState('')
-
   const { category } = useParams()
   const [params] = useSearchParams()
   //
@@ -72,7 +71,6 @@ const Products = () => {
         })
       }
     },[sort])
-   
   return (
     <div className=' w-full'>
       <div className='  h-[80px] justify-center items-center bg-slate-100 flex'>
@@ -100,10 +98,11 @@ const Products = () => {
             <Masonry
                 breakpointCols={breakpointColumnsObj}
                 className="my-masonry-grid flex mx-[-10px]"
-                columnClassName="my-masonry-grid_column">
+                columnClassName="my-masonry-grid_column"
+                >
                 {
                   products?.products?.map(el => (
-                    <Product key={el._id} productData={el} isNew={false}  pid={el.pid} normal={true} />
+                    <Product key={el._id} productData={el} isNew={false}  pid={el.pid} normal={true}/>
                   ))
                 }
             </Masonry>

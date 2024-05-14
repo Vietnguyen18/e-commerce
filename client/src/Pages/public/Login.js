@@ -8,6 +8,7 @@ import path from '../../Ultils/path'
 import {login} from '../../Store/user/userSlice'
 import { useDispatch } from 'react-redux'
 import {showmodal} from '../../Store/app/appSlice'
+import { RingLoader } from 'react-spinners'
 
 const Login = ()  => {
     const [payLoad, setPayLoad] = useState({
@@ -20,6 +21,9 @@ const Login = ()  => {
 
     //dispatch
     const dispatch = useDispatch()
+    //
+    const [isLoading, setIsLoading] = useState(false);
+    
 
     //reset
     const resetPayload = () => {
@@ -39,6 +43,7 @@ const Login = ()  => {
 
     const [isRegister, setIsRegister] = useState(false)
     const handleSubmit = useCallback(async() => {
+      setIsLoading(true)
         const {firstname, lastname, mobile ,...data} = payLoad
         if (isRegister) {
           dispatch(showmodal({isShowModal: true, modalChildren: <Loading /> }))
@@ -53,6 +58,7 @@ const Login = ()  => {
             Swal.fire('Oops !!', response.mes,'error')
           }
         }else{
+          setIsLoading(false)
           const rs = await apiLogin(data)
           if(rs.success){
             dispatch(login({isLoggedIn: true, token: rs.accessToken, userData: rs.userData}))
@@ -60,6 +66,7 @@ const Login = ()  => {
           }else{
             Swal.fire('Oops !!', rs.mes,'error')
           }
+          window.location.reload()
         }
     },[payLoad, isRegister])
   return (
@@ -90,9 +97,12 @@ const Login = ()  => {
                 <Link className=' text-sm text-main hover:underline cursor-pointer w-full text-center' to={`/${path.HOME}`} >Go Home Page?</Link>
              </div>
         </div>
+        {isLoading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                  <RingLoader color='#F37A24' size={60} loading={isLoading} />
+                </div>
+            )}
     </div>
-
-    
   )
 }
 
