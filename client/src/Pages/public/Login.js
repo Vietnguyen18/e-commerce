@@ -57,9 +57,10 @@ const Login = ()  => {
           }else{
             Swal.fire('Oops !!', response.mes,'error')
           }
-        }else{
-          setIsLoading(false)
+        }
+        else{
           const rs = await apiLogin(data)
+          setIsLoading(false)
           if(rs.success){
             dispatch(login({isLoggedIn: true, token: rs.accessToken, userData: rs.userData}))
             navigate(`/${path.HOME}`)

@@ -63,14 +63,18 @@ const CreateProducts = () => {
     }
     setPreview(prev => ({...prev, images: imagesPreview}))
   }
-
+//
   useEffect(() => {
-    handlePreview(watch('thumb')[0])
-  }, [watch('thumb')])
+    if (watch('thumb')) {
+        handlePreview(watch('thumb')[0])
+    }
+}, [watch('thumb')])
 
-  useEffect(() => {
-    handlePreviewImages(watch('images'))
-  }, [watch('images')])
+useEffect(() => {
+    if (watch('images')) {
+        handlePreviewImages(watch('images'))
+    }
+}, [watch('images')])
 
   // delete images
   const handelRemoveImages = (name) => {
@@ -104,7 +108,7 @@ const CreateProducts = () => {
       reset()
       setPayload({
         thumb: '',
-        image: []
+        images: []
       })
       navigate(`/${path.ADMIN}/${path.MANAGE_PRODUCTS}`)
     } else toast.error(response.mes)
@@ -223,7 +227,7 @@ const CreateProducts = () => {
             <div className='my-4 flex w-full gap-3 flex-wrap'>
               {preview.images?.map((el, idx) => (
                 <div key={idx} className='w-fit relative' onMouseEnter={() => setIHoverDelete(el.name)} onMouseLeave={() => setIHoverDelete(null)}>
-                  <img src={el.path} alt='products' className='w-[200px] object-contain' />
+                  <img src={el.path} alt='No images Available' className='w-[200px] object-contain' />
                   {iHoverDelete === el.name && (
                     <div 
                       className='absolute cursor-pointer inset-0 bg-overlay flex items-center justify-center'

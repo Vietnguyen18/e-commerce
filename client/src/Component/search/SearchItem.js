@@ -4,6 +4,7 @@ import icons from '../../Ultils/icon'
 import { colors } from '../../Ultils/contants'
 import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { apiGetProducts } from '../../Api'
+import { formatMoney } from '../../Ultils/help'
 
 
 const {AiFillCaretDown } = icons
@@ -11,13 +12,14 @@ const {AiFillCaretDown } = icons
 const SearchItem = ({name, activeClick,ChangeActive, type = 'checkbox'}) => {
     const [selected, setSelected] = useState([])
     const [bestPrice, setBestPrice] = useState(null)
-    // const [price, setPrice] = useState({
-    //     from: '',
-    //     to: '',
-    // })
     const [params] = useSearchParams()
     const navigate = useNavigate()
     const {category} = useParams()
+    //
+      const [price, setPrice] = useState({
+        from: '',
+        to: '',
+      })
     const handlerSelect = (e) =>{
         const alreadyEl = selected.find(el => el === e.target.value)
         if (alreadyEl) setSelected(prev => prev.filter(el => el !== e.target.value))
@@ -27,6 +29,7 @@ const SearchItem = ({name, activeClick,ChangeActive, type = 'checkbox'}) => {
    const fetchBestPriceProduct = async () => {
     const response = await apiGetProducts({sort: '-price', limit: 1})
     if(response.success) setBestPrice(response.products[0]?.price)
+        console.log(response);
    }
         
     useEffect(() => {
@@ -48,6 +51,7 @@ const SearchItem = ({name, activeClick,ChangeActive, type = 'checkbox'}) => {
     useEffect(() => {
         if(type === 'input') fetchBestPriceProduct()
     },[type])
+    useEffect(() => {})
   return (
     <div onClick={()=>ChangeActive(name)} className=' p-4 text-sm relative border-gray-800 justify-between items-center flex gap-6 border text-gray-500'>
         <span className=' capitalize '>{name}</span>
@@ -84,6 +88,42 @@ const SearchItem = ({name, activeClick,ChangeActive, type = 'checkbox'}) => {
                             ))
                         }
                     </div>
+                </div>
+            }
+            {
+                type === 'input' && <div onClick={e => e.stopPropagation()}>
+                    <div className=' p-2 '>
+                        <div className=' p-4 items-center flex justify-center gap-8 border-b'>
+                            <span className=' whitespace-nowrap'>
+                                {`The highest price is ${formatMoney(bestPrice)} VND`}
+                            </span>
+                            <span className=' underline cursor-pointer hover:text-main' 
+                            onClick={e => 
+                            { e.stopPropagation()
+                                setSelected([])}
+                            }>
+                                Reset
+                            </span>
+                        </div>
+                        <div className=' flex items-center p-2 gap-2'>
+                            <div className=' flex items-center gap-2'>
+                                <label htmlFor='from'>From </label>
+                                <input 
+                                value={price.from}  
+                                className=' form-input' 
+                                type='number' id='from' 
+                                onChange={e => setPrice(prev =>({ ...prev, from: e.target.value}))}/>
+                            </div>
+                            <div className=' flex items-center gap-2'>
+                                <label htmlFor='to'>To </label>
+                                <input 
+                                value={price.to}  
+                                className=' form-input' 
+                                type='number' id='to' 
+                                onChange={e => setPrice(prev =>({ ...prev, to: e.target.value}))}/>
+                            </div>
+                        </div>
+                    </div>    
                 </div>
             }
             </div>
